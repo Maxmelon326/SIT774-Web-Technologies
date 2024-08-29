@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Lily">
+    <meta name="description" content="Javascript Demo">
+    <link rel="stylesheet" href="mystyle6.2.css">
+    
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous">
+
+
+    <title>Form validation</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Form Validation</h1>
+        </header>
+        <main>
+            <h3><strong>Online Form Validation</strong></h3>
+            <p>
+                Please enter your contact details into the form below to register your interest in receving support with a given unit. 
+                Please make sure you use the correct format when inputting your data.
+            </p>
+            <form onsubmit="validation(); return false;">
+                <div class="row mb-3">
+                    <label for="name" class="col-sm-2 form-label">Name:</label>
+                    <div class="col-sm-6">
+                    <input type="text" class="form-control" id="name" placeholder="Your name"> 
+                    </div>
+                    <div class="col-sm-4">
+                        <p id="namemessage" style="font-style: italic;"></p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="email" class="col-sm-2 form-label">Email:</label>
+                    <div class="col-sm-6">
+                    <input type="text" class="form-control" id="email" placeholder="Enter Email" ></div>
+                    <div class="col-sm-4">
+                        <p id="emailmessage" style="font-style: italic;"></p>
+                    </div>
+                </div>
+                <p id="error-message" style="color: red;"></p>
+                <div class="row mb-3">
+                    <label for="unit" class="col-sm-2 form-label">Deakin Unit:</label>
+                    <div class="col-sm-6">
+                    <input type="text" class="form-control" id="unit" placeholder="Unit Code"></div>
+                    <div class="col-sm-4">
+                        <p id="unitmessage" style="font-style: italic;"></p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="phonenumber" class="col-sm-2 form-label">Phone:</label>
+                    <div class="col-sm-6">
+                    <input type="text" class="form-control" id="phone" placeholder="Phone Number"></div>
+                    <div class="col-sm-4">
+                        <p id="phonemessage" style="font-style: italic;"></p>
+                    </div>
+                </div>
+            </form>
+
+            <input class="btn btn-primary" type="button" onclick="submit()"
+                value="Submit Query"/>
+            <input class="btn btn-primary" type="reset" style="background-color: gray;color: white;border: none;" onclick="resetform()"
+                value="Reset"/>
+       
+            </div>
+        </div>
+        <br><br>
+
+        </main>
+    </div>
+
+<script>
+function resetform()
+{
+  document.getElementById("name").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("unit").value = "";
+  document.getElementById("phone").value = "";
+}
+
+//validate name
+function validateName() 
+{
+  var nameInput = document.getElementById("name").value;
+  var messageElement = document.getElementById("namemessage");
+  if (nameInput === "") 
+  {
+    messageElement.innerHTML = "You did not enter your name";
+    messageElement.style.color="red";
+    return false;
+  } 
+  else 
+  {
+    messageElement.innerHTML = "Valid";
+    messageElement.style.color = "green";
+    return true;
+  }
+}
+
+
+//validate email
+function validateEmail() 
+{
+  var emailInput = document.getElementById("email").value;
+  var messageElement = document.getElementById("emailmessage");
+  // Check if the email input is empty
+  if (emailInput === "") 
+  {
+    messageElement.innerHTML = "Please enter your email";
+    messageElement.style.color="red";
+    return false;
+  } 
+
+  // Check if the email ends with "@deakin.edu.au"
+  if(!emailInput.endsWith("@deakin.edu.au") )
+  {
+    messageElement.innerHTML = "Must be your Deakin email ending with '@deakin.edu.au'";
+    messageElement.style.color="red";
+    return false;
+  }
+  //valid email
+  messageElement.innerHTML = "Valid";
+  messageElement.style.color = "green";
+  return true;
+}
+
+//validate unit
+function validateUnit() 
+{
+  var unitInput = document.getElementById("unit").value;
+  var messageElement = document.getElementById("unitmessage");
+  // Check if the input is empty
+  if (unitInput === "") 
+  {
+    messageElement.innerHTML = "Please enter your Deakin Unit";
+    messageElement.style.color="red";
+    return false;
+  } 
+
+  // check unit format
+  var unitRegex = /^[a-zA-Z]{3}\d{3}$/;//正则验证,[a-zA-Z]代表字母,\d代表0-9
+  if(!unitRegex.test(unitInput))
+  {
+    messageElement.innerHTML = "Unit code MUST be in format 'ABC123'";
+    messageElement.style.color="red";
+    return false;
+  }
+  //valid unit
+  messageElement.innerHTML = "Valid";
+  messageElement.style.color = "green";
+  return true;
+
+}
+
+function validatePhone()
+{
+  var phoneInput = document.getElementById("phone").value;
+  var messageElement = document.getElementById("phonemessage");
+  // Check if the input is emptyt
+  if (phoneInput === "") 
+  {
+    messageElement.innerHTML = "Please enter your phone number";
+    messageElement.style.color="red";
+    return false;
+  } 
+
+  var phoneRegex = /^\d{10}$/;
+  if(!phoneRegex.test(phoneInput))
+  {
+    var nonDigitMatch = phoneInput.match(/\D/);
+    if (nonDigitMatch) 
+    {
+      messageElement.innerHTML = "Contains character '" + nonDigitMatch[0] + "'. Numbers only!";
+    }
+    else
+    {
+    messageElement.innerHTML = "Phone number must be exactly 10 digits";
+    }
+    messageElement.style.color="red";
+    return false;
+  }
+
+   //valid phone
+   messageElement.innerHTML = "Valid";
+   messageElement.style.color = "green";
+   return true;
+}
+
+
+
+function submit() 
+{
+  // Call validation functions for each field
+  var isNameValid = validateName();
+  var isEmailValid = validateEmail();
+  var isUnitValid = validateUnit();
+  var isPhoneValid = validatePhone();
+
+  // Check if all validations are successful
+  if (isNameValid && isEmailValid && isUnitValid && isPhoneValid) 
+  {
+    alert("Submit Successful!");
+  }
+}
+
+</script>    
+
+    <!-- Optional JavaScript -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
